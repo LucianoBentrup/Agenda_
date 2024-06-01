@@ -1,12 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function App() {
-  const handleAddEvent = () => {
-    alert('Adicionar compromisso');
+export default function HomeScreen() {
+  const navigation = useNavigation();
+
+  const navigateToAddEvent = () => {
+    navigation.navigate('EventForm');
   };
 
-  const handleDeleteEvent = () => {
+  const showDeleteEventAlert = () => {
     alert('Excluir compromisso');
   };
 
@@ -14,13 +17,13 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.title}>Task Hub</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleAddEvent}>
+        <TouchableOpacity style={styles.button} onPress={navigateToAddEvent}>
           <Text style={styles.buttonText}>Adicionar Compromisso</Text>
         </TouchableOpacity>
-         <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Meus Calendários</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleDeleteEvent}>
+        <TouchableOpacity style={styles.button} onPress={showDeleteEventAlert}>
           <Text style={styles.buttonText}>Excluir Compromisso</Text>
         </TouchableOpacity>
       </View>
@@ -42,7 +45,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '80%',
-    
   },
   button: {
     backgroundColor: '#007bff',
@@ -54,6 +56,5 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-    
   },
 });
