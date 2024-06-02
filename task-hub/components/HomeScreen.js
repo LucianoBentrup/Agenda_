@@ -6,7 +6,7 @@ export default function HomeScreen() {
   const navigation = useNavigation();
 
   const handleAddEvent = () => {
-    navigation.navigate('EventForm');
+    navigation.navigate('EventForm'); //Alterar navigate 
   };
 
   const handleDeleteEvent = () => {
