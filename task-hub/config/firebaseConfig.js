@@ -1,21 +1,23 @@
+
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyD8vqbp0An0MScEUQw5o-DQZ5p99bEhtSk",
+  authDomain: "agenda-bd260.firebaseapp.com",
+  projectId: "agenda-bd260",
+  storageBucket: "agenda-bd260.appspot.com",
+  messagingSenderId: "57007030991",
+  appId: "1:57007030991:web:abcd1234efgh5678"
 };
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 export { auth, db };

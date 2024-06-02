@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { LocaleConfig, Calendar } from 'react-native-calendars';
-import EventForm from './EventForm'; // Certifique-se de que o caminho está correto
+import EventForm from './EventForm';
+import { db } from '../config/firebaseConfig';
+import { collection, addDoc, onSnapshot } from 'firebase/firestore';
 
 const CalendarioScreen = () => {
-  const [events, setEvents] = useState([
-    { id: 1, title: 'Evento 1', date: '2023-06-01' },
-    // outros eventos
-  ]);
+  const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
-  const addEvent = (event) => {
-    setEvents([...events, event]);
-    setShowForm(false); // Esconde o formulário após adicionar o evento
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'events'), (snapshot) => {
+      const eventsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      setEvents(eventsData);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const addEvent = async (event) => {
+    await addDoc(collection(db, 'events'), event);
+    setShowForm(false);
   };
 
   const markedDates = events.reduce((acc, event) => {
