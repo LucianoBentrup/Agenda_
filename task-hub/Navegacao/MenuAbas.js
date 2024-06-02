@@ -1,8 +1,8 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import CalendarioScreen from '../components/CalendarioScreen'; // Caminho atualizado
-import HomeScreen from '../components/HomeScreen'; 
+import CalendarioScreen from '../components/CalendarioScreen';
+import HomeScreen from '../components/HomeScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +12,7 @@ const MenuAbas = () => {
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Calendário" component={CalendarioScreen} />
-        {/* Adicione outras abas conforme necessário */}
+        {/* Removido AtividadeScreen */}
       </Tab.Navigator>
     </NavigationContainer>
   );

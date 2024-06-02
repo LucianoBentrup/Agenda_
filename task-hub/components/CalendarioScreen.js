@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { LocaleConfig, Calendar } from 'react-native-calendars';
 import EventForm from './EventForm'; // Certifique-se de que o caminho está correto
 
@@ -8,9 +8,11 @@ const CalendarioScreen = () => {
     { id: 1, title: 'Evento 1', date: '2023-06-01' },
     // outros eventos
   ]);
+  const [showForm, setShowForm] = useState(false);
 
   const addEvent = (event) => {
     setEvents([...events, event]);
+    setShowForm(false); // Esconde o formulário após adicionar o evento
   };
 
   const markedDates = events.reduce((acc, event) => {
@@ -21,7 +23,8 @@ const CalendarioScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Calendário</Text>
-      <EventForm addEvent={addEvent} />
+      <Button title="Adicionar Evento" onPress={() => setShowForm(true)} />
+      {showForm && <EventForm addEvent={addEvent} />}
       <Calendar
         markedDates={markedDates}
         theme={{
@@ -68,9 +71,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 10,
-  },
-  calendar: {
-    marginTop: 20,
   },
   eventList: {
     marginTop: 20,
