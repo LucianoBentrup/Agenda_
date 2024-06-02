@@ -1,32 +1,32 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-const EventForm = () => {
+// Formulário de Adição de Evento
+const EventForm = ({ addEvent }) => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
-  const navigation = useNavigation();
 
-  const handleSubmit = () => {
-    // Logica para salvar evento
-    // Voltar para home page
-    navigation.navigate('Home');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addEvent({ id: Date.now(), title, date });
+    setTitle('');
+    setDate('');
   };
 
   return (
-    <View>
-      <TextInput
-        placeholder="Titulo do evento:"
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
         value={title}
-        onChangeText={setTitle}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Título do Evento"
       />
-      <TextInput
-        placeholder="Data do evento (DD-MM-AAAA):"
+      <input
+        type="date"
         value={date}
-        onChangeText={setDate}
+        onChange={(e) => setDate(e.target.value)}
       />
-      <Button title="Salvar evento" onPress={handleSubmit} />
-    </View>
+      <button type="submit">Adicionar Evento</button>
+    </form>
   );
 };
 

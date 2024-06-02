@@ -1,15 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
 
-  const navigateToAddEvent = () => {
+  const handleAddEvent = () => {
     navigation.navigate('EventForm');
   };
 
-  const showDeleteEventAlert = () => {
+  const handleDeleteEvent = () => {
     alert('Excluir compromisso');
   };
 
@@ -17,13 +17,13 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Task Hub</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={navigateToAddEvent}>
+        <TouchableOpacity style={styles.button} onPress={handleAddEvent}>
           <Text style={styles.buttonText}>Adicionar Compromisso</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Meus Calendários</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={showDeleteEventAlert}>
+        <TouchableOpacity style={styles.button} onPress={handleDeleteEvent}>
           <Text style={styles.buttonText}>Excluir Compromisso</Text>
         </TouchableOpacity>
       </View>

@@ -1,104 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { Calendar } from 'react-native-calendars';
-import { LocaleConfig } from 'react-native-calendars';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { LocaleConfig, Calendar } from 'react-native-calendars';
+import EventForm from './EventForm'; // Certifique-se de que o caminho está correto
 
+const CalendarioScreen = () => {
+  const [events, setEvents] = useState([
+    { id: 1, title: 'Evento 1', date: '2023-06-01' },
+    // outros eventos
+  ]);
 
-const App = () => {
-  const [events, setEvents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
-
-  useEffect(() => {
-    if (selectedDate) {
-      fetchEvents(selectedDate);
-    }
-  }, [selectedDate]);
-
-  const fetchEvents = async (date) => {
-    try {
-       // Substituir por API real
-      const mockData = [
-        { id: 1, title: 'Evento 1', date: date, description: 'Descrição do Evento 1' },
-        { id: 2, title: 'Evento 2', date: date, description: 'Descrição do Evento 2' },
-      ];
-
-     
-      // const response = await fetch(`https://suaapi.com/eventos?data=${date}`);
-      // const data = await response.json();
-
-     
-      setEvents(mockData);
-    } catch (error) {
-      console.error(error);
-    }
+  const addEvent = (event) => {
+    setEvents([...events, event]);
   };
+
+  const markedDates = events.reduce((acc, event) => {
+    acc[event.date] = { marked: true, dotColor: 'blue', activeOpacity: 0 };
+    return acc;
+  }, {});
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Calendário</Text>
+      <EventForm addEvent={addEvent} />
       <Calendar
-        onDayPress={(day) => setSelectedDate(day.dateString)}
-        markedDates={{
-          [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' },
+        markedDates={markedDates}
+        theme={{
+          todayTextColor: 'red',
+          arrowColor: 'orange',
         }}
       />
-      <Text style={styles.title}>Eventos do dia</Text>
-      <FlatList
-        data={events}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.eventItem}>
-            <Text style={styles.eventTitle}>{item.title}</Text>
-            <Text style={styles.eventDate}>{item.date}</Text>
-            <Text style={styles.eventDescription}>{item.description}</Text>
+      <View style={styles.eventList}>
+        {events.map((event) => (
+          <View key={event.id} style={styles.eventItem}>
+            <Text style={styles.eventDate}>{event.date}</Text>
+            <Text style={styles.eventTitle}>{event.title}</Text>
           </View>
-        )}
-      />
+        ))}
+      </View>
     </View>
   );
 };
 
-
 LocaleConfig.locales['pt-br'] = {
   monthNames: [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro',
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
   ],
   monthNamesShort: [
-    'Jan.',
-    'Fev.',
-    'Mar.',
-    'Abr.',
-    'Maio',
-    'Jun.',
-    'Jul.',
-    'Ago.',
-    'Set.',
-    'Out.',
-    'Nov.',
-    'Dez.',
+    'Jan.', 'Fev.', 'Mar.', 'Abr.', 'Maio', 'Jun.', 'Jul.', 'Ago.', 'Set.', 'Out.', 'Nov.', 'Dez.',
   ],
   dayNames: [
-    'Domingo',
-    'Segunda-feira',
-    'Terça-feira',
-    'Quarta-feira',
-    'Quinta-feira',
-    'Sexta-feira',
-    'Sábado',
+    'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado',
   ],
   dayNamesShort: ['Dom.', 'Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sáb.'],
   today: 'Hoje',
 };
+
 LocaleConfig.defaultLocale = 'pt-br';
 
 const styles = StyleSheet.create({
@@ -111,6 +68,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 10,
+  },
+  calendar: {
+    marginTop: 20,
+  },
+  eventList: {
+    marginTop: 20,
   },
   eventItem: {
     marginBottom: 15,
@@ -126,12 +89,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
-  eventDescription: {
-    fontSize: 14,
-    color: '#888',
-  },
 });
 
-
-
-export default App;
+export default CalendarioScreen;
