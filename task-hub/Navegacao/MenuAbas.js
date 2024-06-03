@@ -12,7 +12,7 @@ const MenuAbas = () => {
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Calendário" component={CalendarioScreen} />
-        {/* Removido AtividadeScreen */}
+        //{/* Removido AtividadeScreen */}
       </Tab.Navigator>
     </NavigationContainer>
   );

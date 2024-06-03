@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { LocaleConfig, Calendar } from 'react-native-calendars';
 import EventForm from './EventForm';
-import { db } from '../config/firebaseConfig';
-import { collection, addDoc, onSnapshot } from 'firebase/firestore';
+
 
 const CalendarioScreen = () => {
   const [events, setEvents] = useState([]);
