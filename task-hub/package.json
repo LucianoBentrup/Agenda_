@@ -22,7 +22,9 @@
     "@react-navigation/bottom-tabs": "*",
     "@expo/vector-icons": "^14.0.0",
     "expo-sqlite": "~14.0.3",
-    "react-native-sqlite-storage": "*"
+    "react-native-sqlite-storage": "*",
+    "expo-asset": "~10.0.6",
+    "expo-file-system": "~17.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

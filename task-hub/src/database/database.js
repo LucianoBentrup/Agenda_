@@ -1,8 +1,23 @@
 import * as SQLite from 'expo-sqlite';
+import * as FileSystem from 'expo-file-system';
+import { Asset } from 'expo-asset';
 
-const db = SQLite.openDatabase('taskhub.db');
+const databaseFileName = 'Hub_task.db';
 
-export const createTables = () => {
+async function openDatabase() {
+  if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + databaseFileName)).exists) {
+    await FileSystem.downloadAsync(
+      Asset.fromModule(require('/src/assets/Hub_task.db')).uri,
+      FileSystem.documentDirectory + databaseFileName
+    );
+  }
+  return SQLite.openDatabase(databaseFileName);
+}
+
+const dbPromise = openDatabase();
+
+export const createTables = async () => {
+  const db = await dbPromise;
   db.transaction(tx => {
     tx.executeSql(
       'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT);',
@@ -13,7 +28,8 @@ export const createTables = () => {
   });
 };
 
-export const registerUser = (name, email, password, callback) => {
+export const registerUser = async (name, email, password, callback) => {
+  const db = await dbPromise;
   db.transaction(tx => {
     tx.executeSql(
       'INSERT INTO users (name, email, password) VALUES (?, ?, ?);',
@@ -24,7 +40,8 @@ export const registerUser = (name, email, password, callback) => {
   });
 };
 
-export const loginUser = (email, password, callback) => {
+export const loginUser = async (email, password, callback) => {
+  const db = await dbPromise;
   db.transaction(tx => {
     tx.executeSql(
       'SELECT * FROM users WHERE email = ? AND password = ?;',
