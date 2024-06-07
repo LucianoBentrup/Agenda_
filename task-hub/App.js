@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-//import Login from './components/Login';
-import CalendarioScreen from './components/CalendarioScreen';
-import HomeScreen from './components/HomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
+import { createTables } from './src/database/database';
 
 const Stack = createStackNavigator();
 
-const App = () => {
+export default function App() {
+  useEffect(() => {
+    createTables();
+  }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Calendario" component={CalendarioScreen} />
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
-
-export default App;
+}
