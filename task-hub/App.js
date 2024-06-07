@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './src/screens/LoginScreen';
-import RegisterScreen from './src/screens/RegisterScreen';
+import LoginScreen from './src/Screens/LoginScreen';
+import RegisterScreen from './src/Screens/RegisterScreen';
 import { createTables } from './src/database/database';
 
 const Stack = createStackNavigator();
