@@ -10,8 +10,12 @@ If you're having problems, you can tweet to us [@expo](https://twitter.com/expo)
 
 Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
 
-a
-Implementar SQlite
+Tested with android studio emulation
+Need mpn install
+
+
+
+Implementar firebase
 Estudar array com limite 
 Puxar Eventform de volta para menu hamburguer.
 Meus calendarios -> Meus eventos 
