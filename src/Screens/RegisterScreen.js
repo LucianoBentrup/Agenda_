@@ -1,136 +1,153 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import { registerUser } from '../database/database';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import auth from '@react-native-firebase/auth';
 
-const RegisterScreen = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+const RegisterScreen = () => {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigation = useNavigation();
 
-  const handleRegister = () => {
-    if (password !== confirmPassword) {
-      Alert.alert('Erro', 'As senhas não coincidem');
-      return;
-    }
+    const handleRegister = () => {
+        if (password === confirmPassword) {
+            auth().createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    auth().currentUser.updateProfile({
+                        displayName: name
+                    }).then(() => {
+                        navigation.navigate('Login');
+                    });
+                })
+                .catch(error => {
+                    setError(error.message);
+                });
+        } else {
+            setError('As senhas não conferem');
+        }
+    };
 
-    registerUser(name, email, password, () => {
-      Alert.alert('Conta criada', 'Sua conta foi criada com sucesso');
-      navigation.navigate('Login');
-    });
-  };
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>CRIAR CONTA</Text>
-      <Text style={styles.subtitle}>O segredo para o sucesso acadêmico começa aqui.</Text>
-      <View style={styles.inputContainer}>
-        <FontAwesome name="user" size={24} color="black" />
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          value={name}
-          onChangeText={setName}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <FontAwesome name="envelope" size={24} color="black" />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <FontAwesome name="lock" size={24} color="black" />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <FontAwesome name="lock" size={24} color="black" />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirma senha"
-          secureTextEntry
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
-      </View>
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Criar conta</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backButtonText}>Voltar</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>CRIAR CONTA</Text>
+            <Text style={styles.subtitle}>O segredo para o sucesso acadêmico começa aqui.</Text>
+            <View style={styles.inputContainer}>
+                <Icon name="user" size={20} color="#000" style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nome"
+                    value={name}
+                    onChangeText={setName}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="envelope" size={20} color="#000" style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="lock" size={20} color="#000" style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="lock" size={20} color="#000" style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Confirma senha"
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    secureTextEntry
+                />
+            </View>
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+            <TouchableOpacity onPress={handleRegister} style={styles.button}>
+                <Text style={styles.buttonText}>Criar conta</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.backButton}>
+                <Text style={styles.backButtonText}>Voltar</Text>
+            </TouchableOpacity>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 20,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    width: '100%',
-  },
-  input: {
-    marginLeft: 10,
-    flex: 1,
-  },
-  button: {
-    backgroundColor: '#000',
-    padding: 15,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  backButton: {
-    backgroundColor: '#ddd',
-    padding: 15,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  backButtonText: {
-    color: '#000',
-    fontWeight: 'bold',
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: '#fff',
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        textAlign: 'center',
+        color: '#000',
+    },
+    subtitle: {
+        fontSize: 16,
+        marginBottom: 20,
+        textAlign: 'center',
+        color: '#000',
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 20,
+        padding: 10,
+    },
+    icon: {
+        marginRight: 10,
+    },
+    input: {
+        flex: 1,
+        height: 40,
+        fontSize: 16,
+        color: '#000',
+    },
+    error: {
+        color: 'red',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    button: {
+        backgroundColor: '#000',
+        padding: 15,
+        marginVertical: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+    },
+    backButton: {
+        backgroundColor: '#ccc',
+        padding: 15,
+        marginVertical: 10,
+        alignItems: 'center',
+        borderRadius: 5,
+    },
+    backButtonText: {
+        color: '#000',
+        fontSize: 16,
+    },
 });
 
 export default RegisterScreen;

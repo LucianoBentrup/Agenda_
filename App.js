@@ -3,14 +3,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/Screens/LoginScreen';
 import RegisterScreen from './src/Screens/RegisterScreen';
-import { createTables } from './src/database/database';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  useEffect(() => {
-    createTables();
-  }, []);
+ // useEffect(() => {
+    //createTables();
+ // }, []);
 
   return (
     <NavigationContainer>

@@ -1,120 +1,158 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import { loginUser } from '../database/database';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import auth from '@react-native-firebase/auth';
 
-const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const LoginScreen = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
+    const navigation = useNavigation();
 
-  const handleLogin = () => {
-    loginUser(email, password, (results) => {
-      if (results.rows.length > 0) {
-        Alert.alert('Login successful', `Welcome back, ${results.rows.item(0).name}`);
-      } else {
-        Alert.alert('Login failed', 'Invalid email or password');
-      }
-    });
-  };
+    const handleLogin = () => {
+        auth().signInWithEmailAndPassword(email, password)
+            .then(() => {
+                navigation.navigate('Calendario');
+            })
+            .catch(error => {
+                setError(error.message);
+            });
+    };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>TASK HUB</Text>
-      <View style={styles.inputContainer}>
-        <FontAwesome name="envelope" size={24} color="black" />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <FontAwesome name="lock" size={24} color="black" />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
-      </View>
-      <TouchableOpacity onPress={handleLogin} style={styles.button}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
-        <Text style={styles.buttonText}>Criar conta</Text>
-      </TouchableOpacity>
-      <Text style={styles.or}>OU</Text>
-      <TouchableOpacity style={styles.googleButton}>
-        <Text style={styles.googleButtonText}>Logar com o Google</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+    const handleGoogleLogin = () => {
+        // Adicionar funcionalidade de login com Google aqui
+    };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>TASK HUB</Text>
+            <View style={styles.inputContainer}>
+                <Icon name="envelope" size={20} color="#000" style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <Icon name="lock" size={20} color="#000" style={styles.icon} />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Senha"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity onPress={toggleShowPassword} style={styles.eyeButton}>
+                    <Icon name={showPassword ? "eye" : "eye-slash"} size={20} color="#000" />
+                </TouchableOpacity>
+            </View>
+            <View style={styles.forgotPasswordContainer}>
+                <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                    <Text style={styles.forgotPasswordLink}> Clique aqui!</Text>
+                </TouchableOpacity>
+            </View>
+            {error ? <Text style={styles.error}>{error}</Text> : null}
+            <TouchableOpacity onPress={handleLogin} style={styles.button}>
+                <Text style={styles.buttonText}>Entrar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.button}>
+                <Text style={styles.buttonText}>Criar conta</Text>
+            </TouchableOpacity>
+            <Text style={styles.orText}>OU</Text>
+            <TouchableOpacity onPress={handleGoogleLogin} style={styles.googleButton}>
+                <Text style={styles.googleButtonText}>Logar com o Google</Text>
+            </TouchableOpacity>
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 40,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    width: '100%',
-  },
-  input: {
-    marginLeft: 10,
-    flex: 1,
-  },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    marginBottom: 20,
-  },
-  link: {
-    color: 'blue',
-  },
-  button: {
-    backgroundColor: '#000',
-    padding: 15,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  or: {
-    marginVertical: 20,
-  },
-  googleButton: {
-    backgroundColor: '#4285F4',
-    padding: 15,
-    borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
-  },
-  googleButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        backgroundColor: '#fff',
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: '#000',
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        marginBottom: 20,
+        width: '100%',
+    },
+    icon: {
+        marginRight: 10,
+    },
+    input: {
+        flex: 1,
+        height: 40,
+        fontSize: 16,
+        paddingHorizontal: 10,
+        color: '#000',
+    },
+    eyeButton: {
+        padding: 5,
+    },
+    forgotPasswordContainer: {
+        flexDirection: 'row',
+        alignSelf: 'flex-start',
+        marginBottom: 20,
+    },
+    forgotPasswordText: {
+        color: '#000',
+    },
+    forgotPasswordLink: {
+        color: '#0000FF',
+        textDecorationLine: 'underline',
+    },
+    error: {
+        color: 'red',
+        marginBottom: 20,
+        textAlign: 'center',
+    },
+    button: {
+        backgroundColor: '#000',
+        padding: 15,
+        marginVertical: 10,
+        alignItems: 'center',
+        width: '100%',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+    },
+    orText: {
+        marginVertical: 10,
+        fontSize: 16,
+        color: '#000',
+    },
+    googleButton: {
+        backgroundColor: '#4285F4',
+        padding: 15,
+        alignItems: 'center',
+        width: '100%',
+    },
+    googleButtonText: {
+        color: 'white',
+        fontSize: 16,
+    },
 });
 
 export default LoginScreen;

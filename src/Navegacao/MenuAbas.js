@@ -1,20 +1,19 @@
-import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import CalendarioScreen from '../Screens/CalendarioScreen';
+import LoginScreen from '../Screens/LoginScreen';
+import RegisterScreen from '../Screens/RegisterScreen';
 
 const Tab = createBottomTabNavigator();
 
-const MenuAbas = () => {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Calendário" component={CalendarioScreen} />
-        {/* Removido AtividadeScreen */}
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-};
-
-export default MenuAbas;
+export default function MenuAbas() {
+    return (
+        <NavigationContainer>
+            <Tab.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+                <Tab.Screen name="Login" component={LoginScreen} />
+                <Tab.Screen name="Calendario" component={CalendarioScreen} />
+                <Tab.Screen name="Register" component={RegisterScreen} />
+            </Tab.Navigator>
+        </NavigationContainer>
+    );
+}
