@@ -18,6 +18,9 @@ Need mpn install
 
 Debug by "npm run --android" on terminal
 
+If want to try web: npx expo install react-native-web react-dom @expo/metro-runtime
+npm run web
+
 
 # To do list
 
