@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/Screens/LoginScreen';
 import RegisterScreen from './src/Screens/RegisterScreen';
-import CalendarScreen from './src/Screens/CalendarScreen';
+import CalendarScreen from './src/Screens/CalendarioScreen';
+
 const Stack = createStackNavigator();
 
 const App = () => {

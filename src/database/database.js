@@ -1,6 +1,6 @@
 import SQLite from 'react-native-sqlite-storage';
 
-// Open the database
+// Abrir o banco de dados
 const db = SQLite.openDatabase(
     {
         name: 'MainDB',
