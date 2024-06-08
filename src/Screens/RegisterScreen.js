@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import auth from '@react-native-firebase/auth';
+import { auth, firestore } from './firebase';  // Import Firebase configuration
 
 const RegisterScreen = () => {
     const [name, setName] = useState('');
@@ -15,12 +15,14 @@ const RegisterScreen = () => {
     const handleRegister = () => {
         if (password === confirmPassword) {
             auth().createUserWithEmailAndPassword(email, password)
-                .then(() => {
-                    auth().currentUser.updateProfile({
-                        displayName: name
-                    }).then(() => {
-                        navigation.navigate('Login');
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    user.updateProfile({ displayName: name });
+                    firestore().collection('users').doc(user.uid).set({
+                        name: name,
+                        email: email
                     });
+                    navigation.navigate('Login');
                 })
                 .catch(error => {
                     setError(error.message);
