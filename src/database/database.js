@@ -1,53 +1,59 @@
-import * as SQLite from 'expo-sqlite';
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
+import SQLite from 'react-native-sqlite-storage';
 
-const databaseFileName = 'Hub_task.db';
+// Open the database
+const db = SQLite.openDatabase(
+    {
+        name: 'MainDB',
+        location: 'default',
+    },
+    () => { console.log('Database opened'); },
+    error => { console.log(error) }
+);
 
-async function openDatabase() {
-  if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + databaseFileName)).exists) {
-    await FileSystem.downloadAsync(
-      Asset.fromModule(require('/src/assets/Hub_task.db')).uri,
-      FileSystem.documentDirectory + databaseFileName
-    );
-  }
-  return SQLite.openDatabase(databaseFileName);
-}
-
-const dbPromise = openDatabase();
-
-export const createTables = async () => {
-  const db = await dbPromise;
-  db.transaction(tx => {
-    tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, password TEXT);',
-      [],
-      () => { console.log('Table created successfully'); },
-      error => { console.log('Error creating table: ', error); }
-    );
-  });
+export const createTable = () => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "CREATE TABLE IF NOT EXISTS Users (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Email TEXT, Password TEXT);"
+        );
+    });
 };
 
-export const registerUser = async (name, email, password, callback) => {
-  const db = await dbPromise;
-  db.transaction(tx => {
-    tx.executeSql(
-      'INSERT INTO users (name, email, password) VALUES (?, ?, ?);',
-      [name, email, password],
-      (tx, results) => { callback(results); },
-      error => { console.log('Error registering user: ', error); }
-    );
-  });
+export const insertUser = (name, email, password, callback) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "INSERT INTO Users (Name, Email, Password) VALUES (?,?,?)",
+            [name, email, password],
+            (tx, results) => {
+                if (results.rowsAffected > 0) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            },
+            error => {
+                console.log(error);
+                callback(false);
+            }
+        );
+    });
 };
 
-export const loginUser = async (email, password, callback) => {
-  const db = await dbPromise;
-  db.transaction(tx => {
-    tx.executeSql(
-      'SELECT * FROM users WHERE email = ? AND password = ?;',
-      [email, password],
-      (tx, results) => { callback(results); },
-      error => { console.log('Error logging in: ', error); }
-    );
-  });
+export const verifyUser = (email, password, callback) => {
+    db.transaction((tx) => {
+        tx.executeSql(
+            "SELECT * FROM Users WHERE Email = ? AND Password = ?",
+            [email, password],
+            (tx, results) => {
+                if (results.rows.length > 0) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            },
+            error => {
+                console.log(error);
+                callback(false);
+            }
+        );
+    });
 };

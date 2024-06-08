@@ -2,31 +2,27 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import auth from '@react-native-firebase/auth';
+import { verifyUser } from '../database/database';  // Updated path
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const navigation = useNavigation();
 
     const handleLogin = () => {
-        auth().signInWithEmailAndPassword(email, password)
-            .then(() => {
+        verifyUser(email, password, (isValid) => {
+            if (isValid) {
                 navigation.navigate('Calendario');
-            })
-            .catch(error => {
-                setError(error.message);
-            });
+            } else {
+                setError('Email ou senha incorretos');
+            }
+        });
     };
 
     const handleGoogleLogin = () => {
         // Adicionar funcionalidade de login com Google aqui
-    };
-
-    const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
     };
 
     return (
@@ -50,16 +46,13 @@ const LoginScreen = () => {
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
                 />
-                <TouchableOpacity onPress={toggleShowPassword} style={styles.eyeButton}>
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
                     <Icon name={showPassword ? "eye" : "eye-slash"} size={20} color="#000" />
                 </TouchableOpacity>
             </View>
-            <View style={styles.forgotPasswordContainer}>
-                <Text style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                    <Text style={styles.forgotPasswordLink}> Clique aqui!</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={styles.forgotPassword}>
+                <Text style={styles.forgotPasswordText}>Esqueceu sua senha? <Text style={styles.forgotPasswordLink}>Clique aqui!</Text></Text>
+            </TouchableOpacity>
             {error ? <Text style={styles.error}>{error}</Text> : null}
             <TouchableOpacity onPress={handleLogin} style={styles.button}>
                 <Text style={styles.buttonText}>Entrar</Text>
@@ -110,8 +103,7 @@ const styles = StyleSheet.create({
     eyeButton: {
         padding: 5,
     },
-    forgotPasswordContainer: {
-        flexDirection: 'row',
+    forgotPassword: {
         alignSelf: 'flex-start',
         marginBottom: 20,
     },

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { auth, firestore } from './firebase';  // Import Firebase configuration
+import { createTable, insertUser } from '../database/database';  // Updated path
 
 const RegisterScreen = () => {
     const [name, setName] = useState('');
@@ -12,21 +12,19 @@ const RegisterScreen = () => {
     const [error, setError] = useState('');
     const navigation = useNavigation();
 
+    useEffect(() => {
+        createTable();
+    }, []);
+
     const handleRegister = () => {
         if (password === confirmPassword) {
-            auth().createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    user.updateProfile({ displayName: name });
-                    firestore().collection('users').doc(user.uid).set({
-                        name: name,
-                        email: email
-                    });
+            insertUser(name, email, password, (success) => {
+                if (success) {
                     navigation.navigate('Login');
-                })
-                .catch(error => {
-                    setError(error.message);
-                });
+                } else {
+                    setError('Registration Failed');
+                }
+            });
         } else {
             setError('As senhas não conferem');
         }

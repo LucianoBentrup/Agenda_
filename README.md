@@ -10,15 +10,7 @@ If you're having problems, you can tweet to us [@expo](https://twitter.com/expo)
 
 Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
 
-## Prerequisites
-
-- Node.js (version X.X.X)
-- npm or yarn
-- React Native CLI
-- Android Studio/android emulator (for expo.go)
-
-
-## Requirements
+# Requirements
 
 Tested with android studio emulation
 
@@ -26,7 +18,7 @@ Need mpn install
 
 Debug by "npm run --android" on terminal / Debug by "expo start --android" on terminal
 
-database: npm install react-native-sqlite-storage
+database: npm install @react-native-firebase/app @react-native-firebase/auth @react-native-firebase/firestore
 
 If want to try web: npx expo install react-native-web react-dom @expo/metro-runtime
 
@@ -35,9 +27,7 @@ npm run web
 
 # To do list
 
-Remover firebase
-
-Mudar para async storage
+Implementar firebase
 
 Estudar array com limite 
 
