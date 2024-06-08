@@ -18,7 +18,7 @@ Snack is Open Source. You can find the code on the [GitHub repo](https://github.
 - Android Studio/android emulator (for expo.go)
 
 
-# Requirements
+## Requirements
 
 Tested with android studio emulation
 
