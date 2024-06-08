@@ -1,4 +1,4 @@
-# Sample Snack app
+# Task Hub app
 
 Open the `App.js` file to start writing some code. You can preview the changes directly on your phone or tablet by scanning the **QR code** or use the iOS or Android emulators. When you're done, click **Save** and share the link!
 
@@ -10,38 +10,31 @@ If you're having problems, you can tweet to us [@expo](https://twitter.com/expo)
 
 Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
 
-# Requirements
+## Requirements
 
-Tested with android studio emulation
-
-Need mpn install
-
-Debug by "npm run --android" on terminal / Debug by "expo start --android" on terminal
-
+- node.js 
+- npm install
 - npm install react-native-sqlite-storage
+- Tested with android studio emulation
+- Debug by "npm run --android" on terminal
+
+
 
 If want to try web: npx expo install react-native-web react-dom @expo/metro-runtime
 
 npm run web
 
 
-# To do list
+## To do list
 
-Implementar firebase
-
-Estudar array com limite 
-
-Puxar Eventform de volta para menu hamburguer.
-
-Meus calendarios -> Meus eventos 
-
-Fazer meus eventos
-
-Fazer um CRUDE em meus eventos
-
-Todos eventos para ADM limite ano com filtro 
-
-Aplicar diff entre adm//usuario
+- Implementar Sqlite
+- Estudar array com limite 
+- Puxar Eventform de volta para menu hamburguer.
+- Meus calendarios -> Meus eventos 
+- Fazer meus eventos
+- Fazer um CRUDE em meus eventos
+- Todos eventos para ADM limite ano com filtro 
+- Aplicar diff entre adm//usuario
 
 
 
