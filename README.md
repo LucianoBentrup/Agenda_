@@ -15,7 +15,7 @@ Snack is Open Source. You can find the code on the [GitHub repo](https://github.
 - Node.js (version X.X.X)
 - npm or yarn
 - React Native CLI
-- Android Studio (for Android development)
+- Android Studio/android emulator (for expo.go)
 
 
 # Requirements
