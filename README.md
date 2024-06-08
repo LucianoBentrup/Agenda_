@@ -16,6 +16,8 @@ Tested with android studio emulation
 
 Need mpn install
 
+Debug by "npm run --android" on terminal
+
 
 # To do list
 
