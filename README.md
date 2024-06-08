@@ -18,7 +18,7 @@ Need mpn install
 
 Debug by "npm run --android" on terminal / Debug by "expo start --android" on terminal
 
-database: npm install @react-native-firebase/app @react-native-firebase/auth @react-native-firebase/firestore
+database: npm install react-native-sqlite-storage
 
 If want to try web: npx expo install react-native-web react-dom @expo/metro-runtime
 
