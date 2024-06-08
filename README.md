@@ -27,7 +27,9 @@ npm run web
 
 # To do list
 
-Implementar firebase
+Remover firebase
+
+Mudar para async storage
 
 Estudar array com limite 
 
