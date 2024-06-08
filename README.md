@@ -10,14 +10,37 @@ If you're having problems, you can tweet to us [@expo](https://twitter.com/expo)
 
 Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
 
-a
-Implementar SQlite
+# Requirements
+
+Tested with android studio emulation
+
+Need mpn install
+
+Debug by "npm run --android" on terminal / Debug by "expo start --android" on terminal
+
+database: npm install @react-native-firebase/app @react-native-firebase/auth @react-native-firebase/firestore
+
+If want to try web: npx expo install react-native-web react-dom @expo/metro-runtime
+
+npm run web
+
+
+# To do list
+
+Implementar firebase
+
 Estudar array com limite 
+
 Puxar Eventform de volta para menu hamburguer.
+
 Meus calendarios -> Meus eventos 
+
 Fazer meus eventos
+
 Fazer um CRUDE em meus eventos
+
 Todos eventos para ADM limite ano com filtro 
+
 Aplicar diff entre adm//usuario
 
 
