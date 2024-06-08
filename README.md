@@ -10,6 +10,14 @@ If you're having problems, you can tweet to us [@expo](https://twitter.com/expo)
 
 Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
 
+## Prerequisites
+
+- Node.js (version X.X.X)
+- npm or yarn
+- React Native CLI
+- Android Studio (for Android development)
+
+
 # Requirements
 
 Tested with android studio emulation
