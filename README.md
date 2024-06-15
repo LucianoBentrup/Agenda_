@@ -65,7 +65,7 @@ Para rodar o projeto em um dispositivo iOS ou emulador, use o seguinte comando (
 npx react-native run-ios
 ```
 
-## Rodando no Snack Expo
+## Snack Expo (Online)
 
 Se você preferir rodar o projeto no [Snack Expo](https://snack.expo.dev), você pode importar o repositório Git diretamente. Siga as instruções abaixo:
 
