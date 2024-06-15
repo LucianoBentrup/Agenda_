@@ -65,6 +65,16 @@ Para rodar o projeto em um dispositivo iOS ou emulador, use o seguinte comando (
 npx react-native run-ios
 ```
 
+## Rodando no Snack Expo
+
+Se você preferir rodar o projeto no [Snack Expo](https://snack.expo.dev), você pode importar o repositório Git diretamente. Siga as instruções abaixo:
+
+- Acesse o [Snack Expo](https://snack.expo.dev).
+- Clique no ícone de menu e selecione "Import git repository".
+- Insira o URL do repositório Git do projeto.
+
+
+
 
 
 
